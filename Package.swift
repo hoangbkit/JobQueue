@@ -7,7 +7,7 @@ let package = Package(
     name: "JobQueue",
     platforms: [
         // Observation-backed SwiftUI APIs in this package are broadly available on macOS 14+.
-        .macOS(.v14)
+        .macOS(.v15)
     ],
     products: [
         .library(name: "JobQueue", targets: ["JobQueue"]),
