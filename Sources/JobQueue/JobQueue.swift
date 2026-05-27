@@ -9,9 +9,6 @@
 
 import Foundation
 import Observation
-import Logging
-
-let logger = Logger(label: "JobQueue")
 
 // MARK: - JobQueue
 
@@ -182,7 +179,6 @@ public final class JobQueue {
     public func start() {
         loadPersistedState()
         advanceQueue()
-        logger.info("queue started")
     }
     
     public func pause() {
@@ -195,13 +191,11 @@ public final class JobQueue {
             records[id]?.updatedAt = Date()
         }
         persistSilently()
-        logger.info("queue paused")
     }
     
     public func resume() {
         isPaused = false
         advanceQueue()
-        logger.info("queue resumed")
     }
     
     /// Cancel all pending and processing jobs.
@@ -215,7 +209,6 @@ public final class JobQueue {
             records[id]?.updatedAt = Date()
         }
         persistSilently()
-        logger.info("queue cancelld all pending and processing jobs")
     }
 
     /// Remove every record from the queue and cancel any in-flight work.
@@ -230,7 +223,6 @@ public final class JobQueue {
             records.removeValue(forKey: id)
         }
         persistSilently()
-        logger.info("queue cleared all completed, failed, cancelled")
     }
 
     // ─── Retry all failed/cancelled ──────────────────────────────────────────
@@ -248,7 +240,6 @@ public final class JobQueue {
             persistSilently()
             advanceQueue()
         }
-        logger.info("queue retry all failed and cancelled jobs")
     }
 
     // ─── Persistence ─────────────────────────────────────────────────────────
@@ -273,7 +264,6 @@ public final class JobQueue {
             if autoCleanupEnabled { pruneIfNeeded() }
         } catch {
             // Corrupted file — start with empty queue.
-            logger.error("Failed to load persisted state: \(error.localizedDescription)")
         }
     }
 

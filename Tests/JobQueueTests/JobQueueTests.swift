@@ -30,6 +30,35 @@ enum ProbeError: Error {
     case failed
 }
 
+enum RecordedEvent: Equatable {
+    case added(UUID)
+    case started(UUID)
+    case completed(UUID)
+    case failed(UUID)
+    case cancelled(UUID)
+    case removed(UUID)
+    case drained
+}
+
+func record(_ event: JobQueueEvent) -> RecordedEvent {
+    switch event {
+    case .jobAdded(let id):
+        return .added(id)
+    case .jobStarted(let id):
+        return .started(id)
+    case .jobCompleted(let id):
+        return .completed(id)
+    case .jobFailed(let id, _):
+        return .failed(id)
+    case .jobCancelled(let id):
+        return .cancelled(id)
+    case .jobRemoved(let id):
+        return .removed(id)
+    case .queueDrained:
+        return .drained
+    }
+}
+
 struct InstantJob: Job {
     let id: UUID
     let payload: String
@@ -192,5 +221,71 @@ struct JobQueueTests {
 
         #expect(queue.records[job.id]?.status == .completed)
         #expect(queue.records[job.id]?.error == nil)
+    }
+
+    @Test("emits lifecycle events for a completed job")
+    @MainActor func emitsEventsForCompletedJob() async throws {
+        let (queue, _, _) = makeQueue()
+        let job = InstantJob("events")
+        var events: [RecordedEvent] = []
+        queue.eventHandler = { events.append(record($0)) }
+
+        try queue.enqueue(job)
+        await waitUntilIdle(queue)
+
+        #expect(events == [
+            .added(job.id),
+            .started(job.id),
+            .completed(job.id),
+            .drained
+        ])
+    }
+
+    @Test("emits failure event for a failed job")
+    @MainActor func emitsEventsForFailedJob() async throws {
+        let (queue, _, _) = makeQueue()
+        let job = await ProbeJob("event-failure") {
+            throw ProbeError.failed
+        }
+        var events: [RecordedEvent] = []
+        queue.eventHandler = { events.append(record($0)) }
+
+        try queue.enqueue(job)
+        await waitUntilIdle(queue)
+
+        #expect(events == [
+            .added(job.id),
+            .started(job.id),
+            .failed(job.id),
+            .drained
+        ])
+    }
+
+    @Test("emits cancellation and removal events for a pending job")
+    @MainActor func emitsEventsForCancelledAndRemovedJob() async throws {
+        let (queue, _, _) = makeQueue()
+        let blocker = await ProbeJob("event-blocker") {
+            try await Task.sleep(for: .milliseconds(30))
+        }
+        let pending = InstantJob("cancel-before-execution")
+        var events: [RecordedEvent] = []
+        queue.eventHandler = { events.append(record($0)) }
+
+        try queue.enqueue(blocker)
+        try queue.enqueue(pending)
+        queue.cancel(id: pending.id)
+        await waitUntilIdle(queue)
+        queue.remove(id: pending.id)
+
+        #expect(events == [
+            .added(blocker.id),
+            .started(blocker.id),
+            .added(pending.id),
+            .cancelled(pending.id),
+            .completed(blocker.id),
+            .drained,
+            .removed(pending.id),
+            .drained
+        ])
     }
 }

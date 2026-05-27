@@ -12,15 +12,9 @@ let package = Package(
     products: [
         .library(name: "JobQueue", targets: ["JobQueue"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/apple/swift-log", from: "1.11.0")
-    ],
     targets: [
         .target(
-            name: "JobQueue",
-            dependencies: [
-                .product(name: "Logging", package: "swift-log")
-            ]
+            name: "JobQueue"
         ),
         .testTarget(
             name: "JobQueueTests",
