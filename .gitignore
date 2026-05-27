@@ -2,6 +2,7 @@
 /.build/
 /Packages/
 Package.resolved
+/.swiftpm/
 
 # Xcode user and build state
 DerivedData/

@@ -1,157 +1,272 @@
-# swift-job-queue
+# JobQueue
+
+A serial, persistent job queue for macOS apps, built with Swift concurrency and
+Observation. Define `Codable` jobs, enqueue them from your application, restore
+unfinished work on launch, and optionally display queue state with the included
+SwiftUI views.
+
+> [!WARNING]
+> JobQueue is under active development. Version `0.1.0` is an initial release,
+> and public APIs, persistence format, and behavior may change before `1.0.0`.
+> Evaluate upgrades carefully before using it for production-critical queues.
+
+## Features
+
+- FIFO processing with one active job per queue
+- JSON persistence with atomic writes
+- Restore pending work across application launches
+- Cooperative cancellation, retry, pause, resume, replace, and cleanup APIs
+- Observable queue state for SwiftUI applications
+- Built-in `JobQueueView`, `JobRecordView`, `JobQueueBadge`, and
+  `JobQueueButton` components
+- Lifecycle events through `eventHandler`
+- No external package dependencies
+
+## Requirements
+
+- Swift 6.0 or later
+- macOS 14 or later
+
+## Installation
+
+Add JobQueue to your package dependencies:
 
 ```swift
-// Usage.swift — How to plug JobQueue into TinyTTS (replaces BatchManager)
-//
-// This file is NOT part of the library — paste the relevant parts into your app.
+dependencies: [
+    .package(url: "https://github.com/hoangbkit/JobQueue.git", from: "0.1.0")
+]
+```
 
+Then add `JobQueue` to your target:
+
+```swift
+.target(
+    name: "YourApp",
+    dependencies: [
+        .product(name: "JobQueue", package: "JobQueue")
+    ]
+)
+```
+
+In Xcode, use **File > Add Package Dependencies...** and enter the same
+repository URL.
+
+## Quick Start
+
+### 1. Define A Job
+
+Every job is `Codable` and `Sendable` so its data can be stored and restored.
+Put everything needed to repeat the work in the payload.
+
+```swift
 import Foundation
-import SwiftUI
-import JobQueue   // ← your new SPM package
+import JobQueue
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MARK: 1. Define your concrete Job type
-// ─────────────────────────────────────────────────────────────────────────────
-
-struct SpeechPayload: Codable, Sendable {
-    var audioId: String?          // Audio.ID serialized as String
-    var text: String
-    var voice: String
-    var speed: Double
-    // add every field from your Audio.Options that needs to round-trip
+struct DownloadPayload: Codable, Sendable {
+    let sourceURL: URL
+    let destinationURL: URL
 }
 
-struct SpeechJob: Job {
+struct DownloadJob: Job {
     let id: UUID
-    let payload: SpeechPayload
-    var title: String? { "Synthesize Speech" }
-    var detail: String? { payload.text }
+    let payload: DownloadPayload
 
-    init(audioId: String? = nil, text: String, voice: String, speed: Double = 1.0) {
-        self.id      = UUID()
-        self.payload = SpeechPayload(audioId: audioId, text: text, voice: voice, speed: speed)
+    var title: String? { "Download File" }
+    var detail: String? { payload.sourceURL.lastPathComponent }
+
+    init(sourceURL: URL, destinationURL: URL) {
+        self.id = UUID()
+        self.payload = DownloadPayload(
+            sourceURL: sourceURL,
+            destinationURL: destinationURL
+        )
     }
 
     func execute() async throws {
-        // 1. Run KokoroServer / ModelManager synthesis — same logic as your
-        //    former synthesizeAndSave(options:) method.
-        // 2. On success, save the resulting URL to your database.
-        //    (Use Container.shared.dataManager() / appService() here)
-        //
-        // Throwing CancellationError (or calling try Task.checkCancellation())
-        // tells the queue the job was cancelled.
-        print("▶️  synthesising: \(payload.text)")
+        try Task.checkCancellation()
+
+        let (data, _) = try await URLSession.shared.data(from: payload.sourceURL)
+
+        try Task.checkCancellation()
+        try data.write(to: payload.destinationURL, options: .atomic)
     }
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MARK: 2. Bootstrap (once at app start)
-// ─────────────────────────────────────────────────────────────────────────────
-
-// In your App struct or AppDelegate:
-
-@main
-struct TinyTTSApp: App {
-
-    // Shared queue — wire through Container / @Environment as you prefer
-    @State private var jobQueue: JobQueue = {
-        // Register types BEFORE loading state
-        JobRegistry.shared.register(SpeechJob.self)
-
-        let url = FileManager.default
-            .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("tts_queue.json")
-
-        let queue = JobQueue(
-            fileURL: url,
-            maxRecords: 50,          // same as your old maxRequests
-            autoCleanupEnabled: true
-        )
-
-        // Optional: listen to events for analytics / notifications
-        queue.eventHandler = { event in
-            switch event {
-            case .jobCompleted(let id):  print("✅ \(id)")
-            case .jobFailed(let id, let err): print("❌ \(id): \(err)")
-            case .queueDrained:          print("🏁 queue drained")
-            default: break
-            }
-        }
-
-        // Restore from last run (crashed jobs reset to .pending automatically)
-        queue.loadPersistedState()
-        return queue
-    }()
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environment(jobQueue)
-        }
-    }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MARK: 3. Enqueue from anywhere
-// ─────────────────────────────────────────────────────────────────────────────
-
-struct AddJobExample: View {
-    @Environment(JobQueue.self) private var queue
-
-    var body: some View {
-        Button("Add TTS Job") {
-            let job = SpeechJob(text: "Hello from JobQueue", voice: "default")
-            try? queue.enqueue(job)
-        }
-    }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MARK: 4. Display the queue  (replaces your BatchQueueView)
-// ─────────────────────────────────────────────────────────────────────────────
-
-struct TTSQueueView: View {
-    @Environment(JobQueue.self) private var queue
-
-    var body: some View {
-        // JobQueueView has built-in docked footer actions (Retry All / Clear All).
-        // JobRecordView shows `record.title` and `record.detail` when available.
-        JobQueueView(queue: queue) { record in
-            // Fallback label if title is not provided by your Job type.
-            return record.typeName
-        }
-        .navigationTitle("TTS Queue")
-    }
-}
-
-// Optional compact indicators and trigger button
-struct QueueIndicators: View {
-    @Environment(JobQueue.self) private var queue
-
-    var body: some View {
-        HStack(spacing: 12) {
-            JobQueueBadge(queue: queue) // shows counts for all statuses
-            JobQueueButton(queue: queue, iconName: "waveform") {
-                // open queue screen
-            }
-        }
-    }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// MARK: 5. Mapping from your old SpeechRequest / BatchManager API
-// ─────────────────────────────────────────────────────────────────────────────
-//
-//  Old API                             New API
-//  ──────────────────────────────────  ──────────────────────────────────────
-//  batchManager.addRequest(_:)         queue.enqueue(SpeechJob(…))
-//  batchManager.cancelRequest(id:)     queue.cancel(id:)
-//  batchManager.resumeRequest(id:)     queue.resume(id:)
-//  batchManager.removeRequest(id:)     queue.remove(id:)
-//  batchManager.clearQueue()           queue.clearAll()
-//  batchManager.getCurrentRequests()   queue.sortedRecords
-//  batchManager.isProcessing           queue.isProcessing
-//  batchManager.requests[id]           queue.records[id]   (JobRecord)
-//  SpeechRequest.status                JobRecord.status    (JobStatus)
-//  batchManager.loadQueueState()       queue.loadPersistedState()
 ```
+
+### 2. Create And Start The Queue
+
+Register each concrete job type before calling `start()`. The parent directory
+for the persistence file must already exist.
+
+```swift
+import Foundation
+import JobQueue
+
+@MainActor
+func makeJobQueue() throws -> JobQueue {
+    JobRegistry.shared.register(DownloadJob.self)
+
+    let directory = FileManager.default
+        .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        .appendingPathComponent("YourApp", isDirectory: true)
+
+    try FileManager.default.createDirectory(
+        at: directory,
+        withIntermediateDirectories: true
+    )
+
+    let queue = JobQueue(
+        fileURL: directory.appendingPathComponent("jobqueue.json"),
+        maxRecords: 100,
+        autoCleanupEnabled: true
+    )
+
+    queue.start()
+    return queue
+}
+```
+
+`start()` restores persisted records and resumes pending work. A job that was
+processing when the application exited is restored as pending.
+
+### 3. Enqueue Work
+
+```swift
+let job = DownloadJob(
+    sourceURL: URL(string: "https://example.com/report.pdf")!,
+    destinationURL: URL.documentsDirectory.appendingPathComponent("report.pdf")
+)
+
+try queue.enqueue(job)
+```
+
+## Observing Events
+
+Set `eventHandler` to respond to queue lifecycle changes:
+
+```swift
+queue.eventHandler = { event in
+    switch event {
+    case .jobCompleted(let id):
+        print("Completed: \(id)")
+    case .jobFailed(let id, let error):
+        print("Failed \(id): \(error.localizedDescription)")
+    case .queueDrained:
+        print("Queue drained")
+    default:
+        break
+    }
+}
+```
+
+Available events are `jobAdded`, `jobStarted`, `jobCompleted`, `jobFailed`,
+`jobCancelled`, `jobRemoved`, and `queueDrained`.
+
+## SwiftUI Views
+
+`JobQueue` is observable and can be passed directly to the supplied views:
+
+```swift
+import SwiftUI
+import JobQueue
+
+struct QueueScreen: View {
+    let queue: JobQueue
+
+    var body: some View {
+        VStack {
+            JobQueueView(queue: queue)
+
+            HStack {
+                JobQueueBadge(queue: queue)
+
+                JobQueueButton(queue: queue) {
+                    // Present the full queue UI.
+                }
+            }
+        }
+    }
+}
+```
+
+The package includes:
+
+| View | Purpose |
+| --- | --- |
+| `JobQueueView` | Queue list with retry and clear actions |
+| `JobRecordView` | One record row with status and row actions |
+| `JobQueueBadge` | Compact counts by status |
+| `JobQueueButton` | Queue button with processing/failure badge |
+
+## Queue Operations
+
+```swift
+queue.cancel(id: id)                  // Cancel pending or processing work
+queue.resume(id: id)                  // Retry one failed or cancelled record
+try queue.replace(id: id, with: job)  // Replace failed or cancelled work
+queue.retryAll()                      // Retry all failed/cancelled records
+queue.pause()                         // Pause queue advancement
+queue.resume()                        // Resume queue advancement
+queue.cancelAll()                     // Cancel active/pending records
+queue.clearAll()                      // Remove terminal records
+queue.remove(id: id)                  // Remove a record
+```
+
+Read state through `records`, `sortedRecords`, `activeCount`,
+`isProcessing`, or `records(with:)`.
+
+## Execution Model
+
+Queue state is managed on `MainActor`, and the queue starts jobs serially in
+FIFO order. `Job.execute()` is asynchronous, but JobQueue does not guarantee a
+dedicated background thread for synchronous work.
+
+Network and other naturally asynchronous operations can be performed directly
+inside `execute()`. A job that performs expensive synchronous work should
+choose its own offloading strategy and honor cancellation where possible.
+
+```swift
+func execute() async throws {
+    let result = try await Task.detached(priority: .utility) {
+        try performExpensiveSynchronousWork()
+    }.value
+
+    try await save(result)
+}
+```
+
+If multiple features share an exclusive resource, such as an on-device model,
+coordinate access outside the queue and give interactive work appropriate
+priority.
+
+## Persistence
+
+The queue writes `[JobRecord]` values as JSON to the `fileURL` supplied during
+initialization. Jobs retain their encoded payload so queued work can be
+restored and executed after relaunch.
+
+Register all restored job types before `start()`:
+
+```swift
+JobRegistry.shared.register(DownloadJob.self)
+queue.start()
+```
+
+If persisted JSON cannot be decoded, the corrupted file is removed and the
+queue starts empty.
+
+## Testing
+
+Run the test suite with:
+
+```bash
+swift test
+```
+
+Tests cover FIFO execution, JSON save and restore, retry behavior, and emitted
+lifecycle events. SwiftUI code is compiled by the package tests; interaction
+testing of packaged views requires a small host application with UI tests.
+
+## License
+
+JobQueue is available under the MIT License. See [LICENSE](LICENSE).

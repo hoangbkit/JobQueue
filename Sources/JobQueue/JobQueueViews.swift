@@ -180,13 +180,10 @@ public struct JobRecordView: View {
 // MARK: - JobQueueView
 
 /// A full list view bound directly to a `JobQueue`.
-/// Pass a `label` closure to turn a `JobRecord` into display text.
+/// Records display their `title` when available and otherwise their type name.
 ///
 /// ```swift
-/// JobQueueView(queue: myQueue) { record in
-///     // decode your payload from record.encodedJob if you need richer labels
-///     record.typeName
-/// }
+/// JobQueueView(queue: myQueue)
 /// ```
 public struct JobQueueView: View {
 

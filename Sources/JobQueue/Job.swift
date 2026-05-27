@@ -25,8 +25,9 @@ public protocol Job: Codable, Sendable {
     /// All data needed to carry out the job.
     var payload: Payload { get }
 
-    /// The unit of work. Called on a background task by `JobQueue`.
-    /// Throw `CancellationError` (or check `Task.isCancelled`) to handle cooperative cancellation.
+    /// The asynchronous unit of work executed serially by `JobQueue`.
+    /// Implementations should offload blocking synchronous work as needed and
+    /// throw `CancellationError` (or check `Task.isCancelled`) for cooperative cancellation.
     func execute() async throws
 
     /// Optional UI-friendly title for queue displays.

@@ -25,8 +25,8 @@ import Observation
 ///     fileURL: URL.documentsDirectory.appending(path: "jobqueue.json")
 /// )
 ///
-/// // 3. Restore persisted jobs from last run
-/// queue.loadPersistedState()
+    /// // 3. Restore persisted jobs and begin processing
+    /// queue.start()
 /// ```
 ///
 /// **Enqueue & observe**
