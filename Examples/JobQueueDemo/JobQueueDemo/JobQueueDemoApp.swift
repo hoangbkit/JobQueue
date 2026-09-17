@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import SerialJobQueue
-import ConcurrentJobQueue
+import JobQueue
 
 @main
 struct JobQueueDemoApp: App {
-    @State private var serialQueue: SerialJobQueue
-    @State private var concurrentQueue: ConcurrentJobQueue.JobQueue
+    @State private var serialQueue: JobQueue
+    @State private var concurrentQueue: JobQueue
     private let serialQueueFileURL: URL
 
     init() {
@@ -26,13 +25,14 @@ struct JobQueueDemoApp: App {
             try? FileManager.default.removeItem(at: concurrentQueueFileURL)
         }
 
-        let serialQueue = SerialJobQueue(
+        let serialQueue = JobQueue(
             fileURL: serialQueueFileURL,
+            policy: JobQueuePolicy(maxConcurrentExecutions: 1),
             registry: DemoJobRegistry.make(),
             maxRecords: 100,
             autoCleanupEnabled: true
         )
-        let concurrentQueue = ConcurrentJobQueue.JobQueue(
+        let concurrentQueue = JobQueue(
             fileURL: concurrentQueueFileURL,
             policy: JobQueuePolicy(maxConcurrentExecutions: 8),
             registry: ConcurrentDemoJobRegistry.make(),
