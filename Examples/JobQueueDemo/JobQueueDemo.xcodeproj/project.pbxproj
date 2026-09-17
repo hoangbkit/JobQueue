@@ -1,0 +1,608 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F3719B762FCF0A3700E1E52F /* ConcurrentJobQueue in Frameworks */ = {isa = PBXBuildFile; productRef = F3719B752FCF0A3700E1E52F /* ConcurrentJobQueue */; };
+		F3D86E792FCFAFA600BF5625 /* SerialJobQueue in Frameworks */ = {isa = PBXBuildFile; productRef = F3D86E782FCFAFA600BF5625 /* SerialJobQueue */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F3719B582FCF09A000E1E52F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F3719B422FCF099900E1E52F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3719B492FCF099A00E1E52F;
+			remoteInfo = JobQueueDemo;
+		};
+		F3719B622FCF09A100E1E52F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F3719B422FCF099900E1E52F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3719B492FCF099A00E1E52F;
+			remoteInfo = JobQueueDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F3719B4A2FCF099A00E1E52F /* JobQueueDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobQueueDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3719B572FCF09A000E1E52F /* JobQueueDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JobQueueDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3719B612FCF09A100E1E52F /* JobQueueDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JobQueueDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F3719B4C2FCF099A00E1E52F /* JobQueueDemo */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JobQueueDemo;
+			sourceTree = "<group>";
+		};
+		F3719B5A2FCF09A000E1E52F /* JobQueueDemoTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JobQueueDemoTests;
+			sourceTree = "<group>";
+		};
+		F3719B642FCF09A100E1E52F /* JobQueueDemoUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JobQueueDemoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F3719B472FCF099A00E1E52F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F3D86E792FCFAFA600BF5625 /* SerialJobQueue in Frameworks */,
+				F3719B762FCF0A3700E1E52F /* ConcurrentJobQueue in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3719B542FCF09A000E1E52F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3719B5E2FCF09A100E1E52F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F3719B412FCF099900E1E52F = {
+			isa = PBXGroup;
+			children = (
+				F3719B4C2FCF099A00E1E52F /* JobQueueDemo */,
+				F3719B5A2FCF09A000E1E52F /* JobQueueDemoTests */,
+				F3719B642FCF09A100E1E52F /* JobQueueDemoUITests */,
+				F3719B4B2FCF099A00E1E52F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F3719B4B2FCF099A00E1E52F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F3719B4A2FCF099A00E1E52F /* JobQueueDemo.app */,
+				F3719B572FCF09A000E1E52F /* JobQueueDemoTests.xctest */,
+				F3719B612FCF09A100E1E52F /* JobQueueDemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F3719B492FCF099A00E1E52F /* JobQueueDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3719B6B2FCF09A100E1E52F /* Build configuration list for PBXNativeTarget "JobQueueDemo" */;
+			buildPhases = (
+				F3719B462FCF099A00E1E52F /* Sources */,
+				F3719B472FCF099A00E1E52F /* Frameworks */,
+				F3719B482FCF099A00E1E52F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F3719B4C2FCF099A00E1E52F /* JobQueueDemo */,
+			);
+			name = JobQueueDemo;
+			packageProductDependencies = (
+				F3719B752FCF0A3700E1E52F /* ConcurrentJobQueue */,
+				F3D86E782FCFAFA600BF5625 /* SerialJobQueue */,
+			);
+			productName = JobQueueDemo;
+			productReference = F3719B4A2FCF099A00E1E52F /* JobQueueDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F3719B562FCF09A000E1E52F /* JobQueueDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3719B6E2FCF09A100E1E52F /* Build configuration list for PBXNativeTarget "JobQueueDemoTests" */;
+			buildPhases = (
+				F3719B532FCF09A000E1E52F /* Sources */,
+				F3719B542FCF09A000E1E52F /* Frameworks */,
+				F3719B552FCF09A000E1E52F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F3719B592FCF09A000E1E52F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F3719B5A2FCF09A000E1E52F /* JobQueueDemoTests */,
+			);
+			name = JobQueueDemoTests;
+			packageProductDependencies = (
+			);
+			productName = JobQueueDemoTests;
+			productReference = F3719B572FCF09A000E1E52F /* JobQueueDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F3719B602FCF09A100E1E52F /* JobQueueDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3719B712FCF09A100E1E52F /* Build configuration list for PBXNativeTarget "JobQueueDemoUITests" */;
+			buildPhases = (
+				F3719B5D2FCF09A100E1E52F /* Sources */,
+				F3719B5E2FCF09A100E1E52F /* Frameworks */,
+				F3719B5F2FCF09A100E1E52F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F3719B632FCF09A100E1E52F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F3719B642FCF09A100E1E52F /* JobQueueDemoUITests */,
+			);
+			name = JobQueueDemoUITests;
+			packageProductDependencies = (
+			);
+			productName = JobQueueDemoUITests;
+			productReference = F3719B612FCF09A100E1E52F /* JobQueueDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F3719B422FCF099900E1E52F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					F3719B492FCF099A00E1E52F = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					F3719B562FCF09A000E1E52F = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = F3719B492FCF099A00E1E52F;
+					};
+					F3719B602FCF09A100E1E52F = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = F3719B492FCF099A00E1E52F;
+					};
+				};
+			};
+			buildConfigurationList = F3719B452FCF099900E1E52F /* Build configuration list for PBXProject "JobQueueDemo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F3719B412FCF099900E1E52F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F3D86E772FCFAFA600BF5625 /* XCLocalSwiftPackageReference "../../../JobQueue" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F3719B4B2FCF099A00E1E52F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F3719B492FCF099A00E1E52F /* JobQueueDemo */,
+				F3719B562FCF09A000E1E52F /* JobQueueDemoTests */,
+				F3719B602FCF09A100E1E52F /* JobQueueDemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F3719B482FCF099A00E1E52F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3719B552FCF09A000E1E52F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3719B5F2FCF09A100E1E52F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F3719B462FCF099A00E1E52F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3719B532FCF09A000E1E52F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3719B5D2FCF09A100E1E52F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F3719B592FCF09A000E1E52F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3719B492FCF099A00E1E52F /* JobQueueDemo */;
+			targetProxy = F3719B582FCF09A000E1E52F /* PBXContainerItemProxy */;
+		};
+		F3719B632FCF09A100E1E52F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3719B492FCF099A00E1E52F /* JobQueueDemo */;
+			targetProxy = F3719B622FCF09A100E1E52F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F3719B692FCF09A100E1E52F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = J458WW3452;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F3719B6A2FCF09A100E1E52F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = J458WW3452;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F3719B6C2FCF09A100E1E52F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J458WW3452;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoangbkit.JobQueueDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F3719B6D2FCF09A100E1E52F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J458WW3452;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoangbkit.JobQueueDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F3719B6F2FCF09A100E1E52F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J458WW3452;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoangbkit.JobQueueDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JobQueueDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JobQueueDemo";
+			};
+			name = Debug;
+		};
+		F3719B702FCF09A100E1E52F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J458WW3452;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoangbkit.JobQueueDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JobQueueDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JobQueueDemo";
+			};
+			name = Release;
+		};
+		F3719B722FCF09A100E1E52F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J458WW3452;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoangbkit.JobQueueDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = JobQueueDemo;
+			};
+			name = Debug;
+		};
+		F3719B732FCF09A100E1E52F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = J458WW3452;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoangbkit.JobQueueDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = JobQueueDemo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F3719B452FCF099900E1E52F /* Build configuration list for PBXProject "JobQueueDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3719B692FCF09A100E1E52F /* Debug */,
+				F3719B6A2FCF09A100E1E52F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F3719B6B2FCF09A100E1E52F /* Build configuration list for PBXNativeTarget "JobQueueDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3719B6C2FCF09A100E1E52F /* Debug */,
+				F3719B6D2FCF09A100E1E52F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F3719B6E2FCF09A100E1E52F /* Build configuration list for PBXNativeTarget "JobQueueDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3719B6F2FCF09A100E1E52F /* Debug */,
+				F3719B702FCF09A100E1E52F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F3719B712FCF09A100E1E52F /* Build configuration list for PBXNativeTarget "JobQueueDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3719B722FCF09A100E1E52F /* Debug */,
+				F3719B732FCF09A100E1E52F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F3D86E772FCFAFA600BF5625 /* XCLocalSwiftPackageReference "../../../JobQueue" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../JobQueue;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F3719B752FCF0A3700E1E52F /* ConcurrentJobQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ConcurrentJobQueue;
+		};
+		F3D86E782FCFAFA600BF5625 /* SerialJobQueue */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SerialJobQueue;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F3719B422FCF099900E1E52F /* Project object */;
+}
