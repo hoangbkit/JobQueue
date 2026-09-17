@@ -1,5 +1,5 @@
 import Foundation
-import ConcurrentJobQueue
+import JobQueue
 
 enum ConcurrentDemoJobRegistry {
     static func make() -> JobRegistry {
