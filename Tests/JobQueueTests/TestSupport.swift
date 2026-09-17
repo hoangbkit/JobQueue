@@ -2,8 +2,8 @@ import Foundation
 import Testing
 @testable import JobQueue
 
-@Suite("ConcurrentJobQueue", .serialized)
-struct ConcurrentJobQueueTests {
+@Suite("JobQueue", .serialized)
+struct JobQueueTests {
     @Suite("Execution")
     struct Execution {}
 
