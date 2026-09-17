@@ -1,5 +1,5 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.Scheduling {
     @Test("preserves FIFO within a type and priority")
