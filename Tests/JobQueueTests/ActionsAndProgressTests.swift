@@ -1,5 +1,5 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.ActionsAndProgress {
     @Test("tracks progress for multiple active app jobs")
