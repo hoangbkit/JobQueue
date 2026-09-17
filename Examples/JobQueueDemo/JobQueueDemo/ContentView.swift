@@ -184,27 +184,44 @@ struct ContentView: View {
     }
 
     private func seedJobs() {
+        let shouldResume = !queue.isPaused
+
         do {
-            try FileManager.default.createDirectory(
-                at: queueFileURL.deletingLastPathComponent(),
-                withIntermediateDirectories: true
-            )
+            if shouldResume {
+                try queue.pause()
+            }
+            defer {
+                if shouldResume {
+                    try? queue.resume()
+                }
+            }
 
-            let records = try makeSeededRecords(count: 80)
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-            encoder.dateEncodingStrategy = .iso8601
-            try encoder.encode(records).write(to: queueFileURL, options: .atomic)
+            for record in queue.sortedRecords {
+                try queue.remove(id: record.id)
+            }
 
-            let seededQueue = JobQueue(
-                fileURL: queueFileURL,
-                policy: JobQueuePolicy(maxConcurrentExecutions: 1),
-                registry: DemoJobRegistry.make(),
-                maxRecords: 100,
-                autoCleanupEnabled: true
-            )
-            try seededQueue.start()
-            queue = seededQueue
+            for index in 0..<80 {
+                let configuration = DemoJobConfiguration(
+                    title: seededTitle(for: index),
+                    message: seededDetail(for: index),
+                    duration: seededDuration(for: index)
+                )
+
+                let id: UUID
+                switch index % 3 {
+                case 0:
+                    id = try queue.enqueue(ProgressDemoJob(configuration))
+                case 1:
+                    id = try queue.enqueue(SilentDemoJob(configuration))
+                default:
+                    id = try queue.enqueue(FailingDemoJob(configuration))
+                }
+
+                if index % 10 == 0 {
+                    try queue.cancel(id: id)
+                }
+            }
+
             showQueuePopover = true
         } catch {
             errorMessage = error.localizedDescription
@@ -212,87 +229,8 @@ struct ContentView: View {
         }
     }
 
-    private func makeSeededRecords(count: Int) throws -> [SeededSerialJobRecord] {
-        try (0..<count).map { index in
-            let createdAt = seededDate(for: index)
-            let status = seededStatus(for: index)
-            let duration = TimeInterval(1 + (index % 8))
-            let title = seededTitle(for: index)
-            let detail = seededDetail(for: index)
-            let encodedJob = try encodedSeededJob(
-                index: index,
-                title: title,
-                detail: detail,
-                duration: duration
-            )
-            let startedAt = status == "pending" ? nil : createdAt.addingTimeInterval(15)
-            let completedAt = status == "pending" ? nil : createdAt.addingTimeInterval(15 + duration)
-
-            return SeededSerialJobRecord(
-                id: UUID(),
-                typeName: seededTypeName(for: index),
-                title: title,
-                detail: detail,
-                status: status,
-                error: status == "failed" ? "Seeded synthesis failed after a simulated service timeout." : nil,
-                createdAt: createdAt,
-                updatedAt: completedAt ?? createdAt,
-                startedAt: startedAt,
-                completedAt: completedAt,
-                encodedJob: encodedJob
-            )
-        }
-    }
-
-    private func encodedSeededJob(
-        index: Int,
-        title: String,
-        detail: String,
-        duration: TimeInterval
-    ) throws -> Data {
-        let configuration = DemoJobConfiguration(
-            title: title,
-            message: detail,
-            duration: duration
-        )
-
-        switch index % 3 {
-        case 0:
-            return try JSONEncoder().encode(ProgressDemoJob(configuration))
-        case 1:
-            return try JSONEncoder().encode(SilentDemoJob(configuration))
-        default:
-            return try JSONEncoder().encode(FailingDemoJob(configuration))
-        }
-    }
-
-    private func seededTypeName(for index: Int) -> String {
-        switch index % 3 {
-        case 0:
-            String(describing: ProgressDemoJob.self)
-        case 1:
-            String(describing: SilentDemoJob.self)
-        default:
-            String(describing: FailingDemoJob.self)
-        }
-    }
-
-    private func seededStatus(for index: Int) -> String {
-        switch index % 10 {
-        case 0:
-            "pending"
-        case 1:
-            "failed"
-        case 2:
-            "cancelled"
-        default:
-            "completed"
-        }
-    }
-
-    private func seededDate(for index: Int) -> Date {
-        let minutesBack = ((index * 137) % (14 * 24 * 60)) + (index % 9) * 11
-        return Date().addingTimeInterval(-TimeInterval(minutesBack * 60))
+    private func seededDuration(for index: Int) -> TimeInterval {
+        0.05 + (Double(index % 4) * 0.05)
     }
 
     private func seededTitle(for index: Int) -> String {
@@ -319,18 +257,4 @@ struct ContentView: View {
         ]
         return details[index % details.count]
     }
-}
-
-private struct SeededSerialJobRecord: Codable {
-    let id: UUID
-    let typeName: String
-    let title: String
-    let detail: String
-    let status: String
-    let error: String?
-    let createdAt: Date
-    let updatedAt: Date
-    let startedAt: Date?
-    let completedAt: Date?
-    let encodedJob: Data
 }
