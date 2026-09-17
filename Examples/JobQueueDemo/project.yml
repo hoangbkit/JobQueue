@@ -1,0 +1,81 @@
+name: JobQueueDemo
+
+options:
+  minimumXcodeGenVersion: 2.45.4
+  createIntermediateGroups: true
+  defaultConfig: Debug
+  deploymentTarget:
+    iOS: "17.0"
+    macOS: "15.0"
+
+configs:
+  Debug: debug
+  Release: release
+
+packages:
+  JobQueue:
+    path: ../..
+
+settings:
+  base:
+    CODE_SIGN_STYLE: Automatic
+    CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: J458WW3452
+    GENERATE_INFOPLIST_FILE: YES
+    MARKETING_VERSION: "1.0"
+    PRODUCT_BUNDLE_IDENTIFIER: com.hoangbkit.jobqueue.demo
+    PRODUCT_NAME: JobQueueDemo
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_VERSION: 6.0
+
+schemes:
+  JobQueueDemo-iOS:
+    build:
+      targets:
+        JobQueueDemo-iOS: all
+    run:
+      config: Debug
+    archive:
+      config: Release
+
+  JobQueueDemo-macOS:
+    build:
+      targets:
+        JobQueueDemo-macOS: all
+    run:
+      config: Debug
+    archive:
+      config: Release
+
+targets:
+  JobQueueDemo-iOS:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: JobQueueDemo
+    dependencies:
+      - package: JobQueue
+        product: JobQueue
+    settings:
+      base:
+        INFOPLIST_KEY_CFBundleDisplayName: JobQueue Demo
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+  JobQueueDemo-macOS:
+    type: application
+    platform: macOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: JobQueueDemo
+    dependencies:
+      - package: JobQueue
+        product: JobQueue
+    settings:
+      base:
+        COMBINE_HIDPI_IMAGES: YES
+        ENABLE_APP_SANDBOX: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        INFOPLIST_KEY_CFBundleDisplayName: JobQueue Demo
+        SDKROOT: macosx
