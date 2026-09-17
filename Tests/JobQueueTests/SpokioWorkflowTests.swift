@@ -1,5 +1,5 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.SpokioWorkflows {
     @Test("runs a creator workflow without letting synthesis monopolize the queue")
