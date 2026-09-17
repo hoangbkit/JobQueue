@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.Persistence {
     @Test("migrates serial records with sensible defaults")
