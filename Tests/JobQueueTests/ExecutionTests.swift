@@ -1,5 +1,5 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.Execution {
     @Test("enforces global and per-type concurrency limits")
