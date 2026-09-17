@@ -9,6 +9,9 @@ DerivedData/
 xcuserdata/
 *.xcuserstate
 
+# XcodeGen-generated projects
+/Examples/JobQueueDemo/JobQueueDemo.xcodeproj/
+
 # macOS
 .DS_Store
 tmp/

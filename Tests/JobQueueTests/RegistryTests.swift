@@ -1,8 +1,8 @@
 import Foundation
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
-extension ConcurrentJobQueueTests.Registry {
+extension JobQueueTests.Registry {
     @Test("registers realistic app job types idempotently")
     func registersAppTypesIdempotently() throws {
         let registry = JobRegistry()

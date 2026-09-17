@@ -1,7 +1,7 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
-extension ConcurrentJobQueueTests.SpokioWorkflows {
+extension JobQueueTests.SpokioWorkflows {
     @Test("runs a creator workflow without letting synthesis monopolize the queue")
     @MainActor func runsMixedCreatorWorkflow() async throws {
         await SynthesisJob.probe.reset()

@@ -1,5 +1,5 @@
 import SwiftUI
-import ConcurrentJobQueue
+import JobQueue
 
 struct ConcurrentDemoView: View {
     @State private var queue: JobQueue

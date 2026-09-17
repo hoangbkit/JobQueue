@@ -1,7 +1,7 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
-extension ConcurrentJobQueueTests.ActionsAndProgress {
+extension JobQueueTests.ActionsAndProgress {
     @Test("tracks progress for multiple active app jobs")
     @MainActor func tracksConcurrentProgress() async throws {
         await SynthesisJob.probe.reset()

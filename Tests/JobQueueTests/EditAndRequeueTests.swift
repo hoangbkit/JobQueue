@@ -1,7 +1,7 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
-extension ConcurrentJobQueueTests.ActionsAndProgress {
+extension JobQueueTests.ActionsAndProgress {
     @Test("failed app job can be edited and requeued")
     @MainActor func replacesFailedJob() async throws {
         let (queue, _, _) = try makeQueue(globalLimit: 1)

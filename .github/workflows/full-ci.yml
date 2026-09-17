@@ -1,0 +1,114 @@
+name: Full CI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: job-queue-full-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    name: ${{ matrix.name }} — package + macOS demo
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Intel macOS 15
+            runner: macos-15-intel
+          - name: Apple Silicon macOS 15
+            runner: macos-15
+          - name: Apple Silicon macOS 26
+            runner: macos-26
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Toolchain info
+        run: |
+          uname -m
+          sw_vers
+          swift --version
+          xcodebuild -version
+
+      - name: Validate package manifest
+        run: swift package dump-package > /dev/null
+
+      - name: Run package tests
+        run: swift test --parallel
+
+      - name: Build package (release)
+        run: swift build -c release
+
+      - name: Install XcodeGen
+        run: |
+          if ! command -v xcodegen >/dev/null 2>&1; then
+            brew install xcodegen
+          fi
+          xcodegen --version
+
+      - name: Generate demo project
+        run: |
+          cd Examples/JobQueueDemo
+          xcodegen generate
+
+      - name: Build macOS demo
+        run: |
+          xcodebuild \
+            -scheme JobQueueDemo-macOS \
+            -project Examples/JobQueueDemo/JobQueueDemo.xcodeproj \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/JobQueueDemo-macOS-DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+  ios:
+    name: Apple Silicon macOS 26 — iOS 26 Simulator demo
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Toolchain info
+        run: |
+          uname -m
+          sw_vers
+          swift --version
+          xcodebuild -version
+          xcodebuild -showsdks
+
+      - name: Validate package manifest
+        run: swift package dump-package > /dev/null
+
+      - name: Install XcodeGen
+        run: |
+          if ! command -v xcodegen >/dev/null 2>&1; then
+            brew install xcodegen
+          fi
+          xcodegen --version
+
+      - name: Generate demo project
+        run: |
+          cd Examples/JobQueueDemo
+          xcodegen generate
+
+      - name: Build iOS demo for Simulator
+        run: |
+          xcodebuild \
+            -scheme JobQueueDemo-iOS \
+            -project Examples/JobQueueDemo/JobQueueDemo.xcodeproj \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/JobQueueDemo-iOS-DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
