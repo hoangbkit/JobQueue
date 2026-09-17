@@ -1,7 +1,7 @@
 import Testing
 @testable import JobQueue
 
-extension ConcurrentJobQueueTests.Execution {
+extension JobQueueTests.Execution {
     @Test("enforces global and per-type concurrency limits")
     @MainActor func enforcesConcurrencyLimits() async throws {
         await SynthesisJob.probe.reset()
