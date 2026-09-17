@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import SerialJobQueue
+import JobQueue
 
 struct ContentView: View {
-    @State private var queue: SerialJobQueue
+    @State private var queue: JobQueue
     private let queueFileURL: URL
     @State private var jobKind: DemoJobKind = .progress
     @State private var jobTitle: String = ""
@@ -20,7 +20,7 @@ struct ContentView: View {
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
 
-    init(queue: SerialJobQueue, queueFileURL: URL) {
+    init(queue: JobQueue, queueFileURL: URL) {
         self._queue = State(initialValue: queue)
         self.queueFileURL = queueFileURL
     }
@@ -93,14 +93,14 @@ struct ContentView: View {
             Button {
                 showQueuePopover = true
             } label: {
-                SerialJobQueueBadge(queue: queue)
+                JobQueueBadge(queue: queue)
             }
             .accessibilityIdentifier("demo-queue-badge-button")
             .popover(isPresented: $showQueuePopover, arrowEdge: .bottom) {
-                SerialJobQueueView(queue: queue) { _ in
-                    
+                JobQueueView(queue: queue) { _ in
+
                 } onError: { _ in
-                    
+
                 }
                     .frame(minWidth: 620, minHeight: 420)
             }
@@ -163,8 +163,9 @@ struct ContentView: View {
             )
             try Data(contents.utf8).write(to: queueFileURL, options: .atomic)
 
-            let brokenQueue = SerialJobQueue(
+            let brokenQueue = JobQueue(
                 fileURL: queueFileURL,
+                policy: JobQueuePolicy(maxConcurrentExecutions: 1),
                 registry: DemoJobRegistry.make(),
                 maxRecords: 100,
                 autoCleanupEnabled: true
@@ -172,7 +173,7 @@ struct ContentView: View {
             do {
                 try brokenQueue.start()
             } catch {
-                // Keep the queue instance so SerialJobQueueView can show recovery actions.
+                // Keep the queue instance so JobQueueView can show recovery actions.
             }
             queue = brokenQueue
             showQueuePopover = true
@@ -195,8 +196,9 @@ struct ContentView: View {
             encoder.dateEncodingStrategy = .iso8601
             try encoder.encode(records).write(to: queueFileURL, options: .atomic)
 
-            let seededQueue = SerialJobQueue(
+            let seededQueue = JobQueue(
                 fileURL: queueFileURL,
+                policy: JobQueuePolicy(maxConcurrentExecutions: 1),
                 registry: DemoJobRegistry.make(),
                 maxRecords: 100,
                 autoCleanupEnabled: true
