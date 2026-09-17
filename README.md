@@ -13,7 +13,7 @@ A persistent Swift job queue for iOS and macOS with concurrency control, priorit
 Add `JobQueue` with Swift Package Manager:
 
 ```swift
-.package(url: "https://github.com/hoangbkit/JobQueue.git", from: "1.0.0")
+.package(url: "https://github.com/hoangbkit/JobQueue.git", branch: "master")
 ```
 
 Then add the `JobQueue` product to your target and import it:
@@ -110,10 +110,11 @@ try queue.enqueue(
 - priority-aware scheduling
 - per-job-type concurrency limits
 - queue-wide concurrency limits
-- persistent progress and status records
+- persistent job records
+- live progress and queue status
 - recovery of interrupted work after relaunch
 
-You can also observe queue state directly through properties such as `records`, `runningCount`, `activeCount`, `status`, and `liveProgress`.
+You can observe queue state directly through properties such as `records`, `runningCount`, `activeCount`, `status`, and `liveProgress`.
 
 ## SwiftUI
 
