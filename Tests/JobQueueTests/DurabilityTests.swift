@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import JobQueue
 
-extension ConcurrentJobQueueTests.Durability {
+extension JobQueueTests.Durability {
     @Test("enqueue save failure preserves the previous durable queue")
     @MainActor func enqueueSaveFailureRollsBack() async throws {
         await SynthesisJob.probe.reset()
