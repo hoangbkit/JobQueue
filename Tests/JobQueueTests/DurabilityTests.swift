@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.Durability {
     @Test("enqueue save failure preserves the previous durable queue")
