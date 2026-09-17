@@ -50,18 +50,20 @@ struct JobQueueDemoApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
-                Tab("Serial Queue", systemImage: "list.number") {
-                    ContentView(
-                        queue: serialQueue,
-                        queueFileURL: serialQueueFileURL
-                    )
+                ContentView(
+                    queue: serialQueue,
+                    queueFileURL: serialQueueFileURL
+                )
+                .tabItem {
+                    Label("Serial Queue", systemImage: "list.number")
                 }
 
-                Tab("Concurrent Queue", systemImage: "square.stack.3d.up.fill") {
-                    ConcurrentDemoView(queue: concurrentQueue)
-                }
+                ConcurrentDemoView(queue: concurrentQueue)
+                    .tabItem {
+                        Label("Concurrent Queue", systemImage: "square.stack.3d.up.fill")
+                    }
             }
-                .preferredColorScheme(.dark)
+            .preferredColorScheme(.dark)
         }
     }
 }
