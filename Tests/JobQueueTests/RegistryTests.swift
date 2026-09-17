@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.Registry {
     @Test("registers realistic app job types idempotently")
