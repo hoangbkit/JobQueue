@@ -1,9 +1,9 @@
 import Foundation
-import SerialJobQueue
+import JobQueue
 
 enum DemoJobRegistry {
-    static func make() -> SerialJobRegistry {
-        let registry = SerialJobRegistry()
+    static func make() -> JobRegistry {
+        let registry = JobRegistry()
         try! registry.register(ProgressDemoJob.self)
         try! registry.register(SilentDemoJob.self)
         try! registry.register(FailingDemoJob.self)
@@ -36,7 +36,7 @@ struct DemoJobConfiguration {
     let duration: TimeInterval
 }
 
-struct ProgressDemoJob: SerialJob {
+struct ProgressDemoJob: Job {
     struct Payload: Codable, Sendable {
         let title: String?
         let message: String
@@ -58,7 +58,7 @@ struct ProgressDemoJob: SerialJob {
         )
     }
 
-    func execute(progress: SerialJobProgressReporter) async throws {
+    func execute(progress: JobProgressReporter) async throws {
         let steps = 10
         for step in 1...steps {
             try Task.checkCancellation()
@@ -71,7 +71,7 @@ struct ProgressDemoJob: SerialJob {
     }
 }
 
-struct SilentDemoJob: SerialJob {
+struct SilentDemoJob: Job {
     struct Payload: Codable, Sendable {
         let title: String?
         let message: String
@@ -98,7 +98,7 @@ struct SilentDemoJob: SerialJob {
     }
 }
 
-struct FailingDemoJob: SerialJob {
+struct FailingDemoJob: Job {
     struct Payload: Codable, Sendable {
         let title: String?
         let message: String
@@ -120,7 +120,7 @@ struct FailingDemoJob: SerialJob {
         )
     }
 
-    func execute(progress: SerialJobProgressReporter) async throws {
+    func execute(progress: JobProgressReporter) async throws {
         await progress.report(fractionCompleted: 0.2, message: "Starting")
         try await Task.sleep(for: .seconds(payload.duration))
         await progress.report(fractionCompleted: 0.9, message: "About to fail")
