@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import JobQueue
 
-extension ConcurrentJobQueueTests.Persistence {
+extension JobQueueTests.Persistence {
     @Test("migrates serial records with sensible defaults")
     @MainActor func migratesSerialRecords() async throws {
         await SynthesisJob.probe.reset()
