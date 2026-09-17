@@ -9,6 +9,10 @@ extension ConcurrentJobQueueTests.Durability {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         let url = directory.appendingPathComponent("queue.json")
+        try FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
         let (queue, _, _) = try makeQueue(fileURL: url, globalLimit: 1)
         let persisted = ExportJob("persisted")
         let rejected = ExportJob("rejected")
@@ -36,6 +40,10 @@ extension ConcurrentJobQueueTests.Durability {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
         let url = directory.appendingPathComponent("queue.json")
+        try FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
         let (queue, _, _) = try makeQueue(fileURL: url, globalLimit: 1)
         let first = ExportJob("finishes-before-save-failure", durationMilliseconds: 100)
         let second = ExportJob("blocked-after-save-failure")
