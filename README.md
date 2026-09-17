@@ -1,5 +1,8 @@
 # JobQueue
 
+> [!WARNING]
+> This package is public, but it is not actively maintained. Use it as-is; issues, pull requests, and support requests may not be addressed.
+
 A persistent Swift job queue for iOS and macOS with concurrency control, priorities, progress reporting, cancellation, pause/resume support, and SwiftUI queue views.
 
 ## Requirements
