@@ -1,5 +1,5 @@
 import Testing
-@testable import ConcurrentJobQueue
+@testable import JobQueue
 
 extension ConcurrentJobQueueTests.ActionsAndProgress {
     @Test("failed app job can be edited and requeued")
