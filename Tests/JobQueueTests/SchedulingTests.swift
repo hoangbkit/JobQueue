@@ -1,7 +1,7 @@
 import Testing
 @testable import JobQueue
 
-extension ConcurrentJobQueueTests.Scheduling {
+extension JobQueueTests.Scheduling {
     @Test("preserves FIFO within a type and priority")
     @MainActor func preservesLaneFIFO() async throws {
         await SynthesisJob.probe.reset()
